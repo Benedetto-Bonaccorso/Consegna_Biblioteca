@@ -1,0 +1,36 @@
+﻿@model Consegna_Biblioteca.Models.Prestito_Pivot
+
+@{
+    ViewBag.Title = "ArchiviaPrestito";
+}
+
+<h2>ArchiviaPrestito</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Prestito_Pivot</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id_Prestito)
+    @Html.HiddenFor(model => model.Id_Utente_Foreign)
+    @Html.HiddenFor(model => model.Id_Documento_Foreign)
+
+    <h4>Id Prestito: @Html.DisplayFor(model => model.Id_Prestito)</h4>
+    <h4>Nome Utente: @Html.DisplayFor(model => model.Utente.Nome) @Html.DisplayFor(model => model.Utente.Cognome)</h4>
+    <h4>Titolo Documento: @Html.DisplayFor(model => model.Documento.Titolo)</h4>
+    <h4>Stato Disponibilità al pubblico: @Html.DisplayFor(model => model.Documento.Stato_Disponibilità)</h4>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Archivia Prestito" class="LinkAzione my-3" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Torna Alla Lista", "Prestiti", "", new { @class = "LinkAzione my-3" })
+</div>

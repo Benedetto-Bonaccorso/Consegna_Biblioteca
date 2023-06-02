@@ -1,0 +1,68 @@
+﻿@using Consegna_Biblioteca.Models
+
+@model IEnumerable<Consegna_Biblioteca.Models.Prestito_Pivot>
+
+@{
+    ViewBag.Title = "InformazioniPrestiti";
+}
+
+<h2>InformazioniPrestiti</h2>
+
+<input id="ElencoPrestitiAttuali" value="Elenco Prestiti Attivi" type="button" class="LinkAzione"/>
+<input id="ContaPrestitiPerSettore" value="Conta Prestiti" type="button" class="LinkAzione" />
+
+<div id="output">
+    <h3>qui vedrai i risultati richiesti</h3>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#ElencoPrestitiAttuali').click(function () {
+            $("#output").empty()
+            $.ajax({
+                url: '@Url.Action("ListaPrestitiInEssere", "Documento")',
+                type: 'GET',
+                success: function (Prestiti) {
+                    $.each(Prestiti, function (Index, Value) {
+
+
+                        $("#output").append(
+                            "<p class='output-ajax text-white'> L'utente " + Value.Cognome_Utente +
+                            " ha preso in prestito il documento " + Value.Titolo_Documento + "</p>"
+                        )
+                    })
+                }
+            })
+
+        })
+
+        $('#ContaPrestitiPerSettore').click(function () {
+            $("#output").empty()
+
+            $.ajax({
+                url: '@Url.Action("ListaPrestitiSettore", "Documento")',
+                type: 'GET',
+                success: function (PrestitiSettore) {
+
+                    $.each(PrestitiSettore, function (Index, Value) {
+                        if (Value.ConteggioPrestiti == 1) {
+                            $("#output").append(
+                                "<p class='output-ajax text-white'> c'è " + Value.ConteggioPrestiti +
+                                " Prestito per la categoria " + Value.NomeSettore + "</p>"
+                            )
+                        } else {
+                            $("#output").append(
+                                "<p class='output-ajax text-white'> ci sono " + Value.ConteggioPrestiti +
+                                " Prestiti per la categoria " + Value.NomeSettore + "</p>"
+                            )
+                        }
+
+                    })
+                }
+            })
+        })
+    })
+
+</script>

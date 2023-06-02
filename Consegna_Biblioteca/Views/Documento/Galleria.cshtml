@@ -1,0 +1,181 @@
+﻿@model IEnumerable<Consegna_Biblioteca.Models.Documento>
+@using Consegna_Biblioteca.Models
+
+@{
+    ViewBag.Title = "Galleria";
+}
+
+
+<div class="container bg-black my-3 p-2 form-group">
+    <h3 class="mb-3 mt-1">Hai già in mente qualcosa di specifico?</h3>
+    <input type="text" placeholder="Ricerca per id" id="inputRicercaId" class="form-control d-inline"/>
+    <button type="submit" id="tastoRicercaId" class="LinkAzione">Cerca</button>
+
+    <input type="text" placeholder="Ricerca per Nome" id="inputRicercaNome" class="form-control d-inline"/>
+    <button type="submit" id="tastoRicercaNome" class="LinkAzione">Cerca</button>
+</div>
+
+<table class="table" id="galleria">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Settore.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Titolo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stato_Disponibilità)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Scaffale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.img_Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lunghezza)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Settore.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titolo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anno)
+            </td>
+            <td>
+                @if (item.Stato_Disponibilità == true)
+                {
+                    <p>Si</p>
+                }
+                else
+                {
+                    <p>No</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Scaffale)
+            </td>
+            <td>
+                @if (item.img_Url != null)
+                {
+                    <img class="ListImg" src="~/Content/Img/@item.img_Url" alt="copertina di @item.Titolo">
+                }
+                else
+                {
+                    <img class="ListImg" src="~/Content/img/Placeholder.png" alt="copertina di @item.Titolo">
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lunghezza)
+            </td>
+            <td>
+                @Html.ActionLink("Prendilo in prestito", "Prestito", new { id = item.Id_Documento }, new { @class = "LinkAzione" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#tastoRicercaId").click(function () {
+            let input = $("#inputRicercaId").val()
+
+            $.ajax({
+                url: "CercaDocumentoId/" + input,
+                type: 'GET',
+                success: function (documento) {
+                    $("#galleria").empty()
+                    console.log(documento)
+                    if (documento.Id_Documento != 0) {
+                        $("#galleria").append(
+                            "<tr>" +
+                            "<th>Titolo</th>" +
+                            "<th>Lunghezza</th>" +
+                            "<th>Scaffale</th>" +
+                            "<th>è questo che cercavi ?</th>" +
+                            "</tr>" +
+                            "<tr>" +
+                            "<td>" + documento.Titolo + "</td>" +
+                            "<td>" + documento.Lunghezza + "</td>" +
+                            "<td>" + documento.Scaffale + "</td>" +
+                            "<td>" +
+                            "<a class='LinkAzione' href='/Documento/Prestito/" + documento.Id_Documento + "'>Prendilo In Prestito</a>" +
+                            "</td>" +
+                            "</tr>"
+                        )
+                    } else {
+                        $("#galleria").append(
+                            "<tr>" +
+                                "<th>Nessun risultato trovato</th>" +
+                                "<th>Magari prova con la ricerca per ID</th>" +
+                                "</tr>"
+                        )
+                    }
+                }
+            })
+
+        })
+
+        $("#tastoRicercaNome").click(function () {
+            let input = $("#inputRicercaNome").val()
+            $.ajax({
+                url: "CercaDocumentoNome/" + input,
+                type: 'GET',
+                success: function (documento) {
+                    console.log(documento)
+                    $("#galleria").empty()
+                    if (documento.Id_Documento != 0) {
+                        $("#galleria").append(
+                            "<tr>" +
+                            "<th>Titolo</th>" +
+                            "<th>Lunghezza</th>" +
+                            "<th>Scaffale</th>" +
+                            "<th>è questo che cercavi ?</th>" +
+                            "</tr>" +
+                            "<tr>" +
+                            "<td>" + documento.Titolo + "</td>" +
+                            "<td>" + documento.Lunghezza + "</td>" +
+                            "<td>" + documento.Scaffale + "</td>" +
+                            "<td>" +
+                            "<a class='LinkAzione' href='/Documento/Prestito/" + documento.Id_Documento + "'>Prendilo In Prestito</a>" +
+                            "</td>" +
+                            "</tr>"
+                            )
+                    } else {
+                        $("#galleria").append(
+                            "<tr>" +
+                                "<th>Nessun risultato trovato</th>" +
+                                "<th>Magari prova con la ricerca per Nome</th>" +
+                            "</tr>"
+                        )
+                    }
+                }
+            })
+
+        })
+    })
+</script>
+
+<!--
+'<img class="ListImg" src="~/Content/img/Placeholder.png" alt="copertina di'+ documento.Titolo +'">' +
+-->

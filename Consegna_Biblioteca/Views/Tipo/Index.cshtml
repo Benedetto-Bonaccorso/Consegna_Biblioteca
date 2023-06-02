@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Consegna_Biblioteca.Models.Tipo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Indice Tipologie</h2>
+
+<p>
+    @Html.ActionLink("Crea", "Create", "", new { @class = "LinkAzione" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Display_Lunghezza)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Display_Lunghezza)
+        </td>
+        <td>
+            @Html.ActionLink("Modifica", "Edit", new { id=item.Id_Tipo }, new { @class = "LinkAzione" })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,66 @@
+﻿@model Consegna_Biblioteca.Models.Documento
+
+@{
+    ViewBag.Title = "Prestito";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id_Documento)
+    @Html.HiddenFor(model => model.Id_Settore_Foreign)
+    @Html.HiddenFor(model => model.Id_Tipo_Foreign)
+    @Html.HiddenFor(model => model.Anno)
+    @Html.HiddenFor(model => model.img_Url)
+    @Html.HiddenFor(model => model.Scaffale)
+    @Html.HiddenFor(model => model.Lunghezza)
+    @Html.HiddenFor(model => model.Stato_Disponibilità)
+    @Html.HiddenFor(model => model.Titolo)
+
+
+    @if(Model.img_Url != null){
+        <img class="ListImg mb-3" src="~/Content/Img/@Model.img_Url" alt="copertina di @Model.Titolo">
+    }
+    else {
+        <img class="ListImg mb-3" src="~/Content/img/Placeholder.png" alt="copertina di @Model.Titolo">
+    }
+
+    <h3>
+        Titolo: @Html.DisplayFor(model => model.Titolo)
+    </h3>
+    <h3>
+        Anno Di Pubblicazione: @Html.DisplayFor(model => model.Anno)
+    </h3>
+    <h3>
+        Settore: @Html.DisplayFor(model => model.Settore.Nome)
+    </h3>
+    <h3>
+        Puoi trovarlo allo scaffale @Html.DisplayFor(model => model.Scaffale) della sezione @Html.DisplayFor(model => model.Settore.Nome)
+    </h3>
+
+    <h3>
+        @Html.DisplayFor(model => model.Tipo.Display_Lunghezza): @Html.DisplayFor(model => model.Lunghezza)
+    </h3>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Prendi In Prestito" class="LinkAzione my-3" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Torna Alla Lista", "Galleria", "", new { @class = "LinkAzione my-3" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

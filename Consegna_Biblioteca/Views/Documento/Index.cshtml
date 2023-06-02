@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Consegna_Biblioteca.Models.Documento>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Indice Libri</h2>
+
+<p>
+    @Html.ActionLink("Crea Nuovo Documento", "Create", "",new { @class = "LinkAzione my-5" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Settore.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Titolo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stato_Disponibilità)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Scaffale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.img_Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lunghezza)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Settore.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titolo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anno)
+            </td>
+            <td>
+                @if (item.Stato_Disponibilità == true)
+                {
+                    <p>Si</p>
+                }
+                else
+                {
+                    <p>No</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Scaffale)
+            </td>
+            <td>
+                @if (item.img_Url != null)
+                {
+                    <img class="ListImg" src="~/Content/Img/@item.img_Url" alt="copertina di @item.Titolo">
+}
+                else {
+                    <img class="ListImg" src="~/Content/img/Placeholder.png" alt="copertina di @item.Titolo">
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lunghezza)
+            </td>
+            <td>
+                @Html.ActionLink("Modifica", "Edit", new { id = item.Id_Documento }, new { @class = "LinkAzione" })
+            </td>
+        </tr>
+    }
+
+</table>
